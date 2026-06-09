@@ -1,0 +1,29 @@
+{
+  "name": "@openmind/desktop",
+  "version": "1.0.0",
+  "description": "OPEN MIND AI Desktop Application (Tauri + React)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "tauri": "tauri",
+    "lint": "eslint src --ext .ts,.tsx",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@openmind/ui": "workspace:*",
+    "@openmind/shared-types": "workspace:*",
+    "@openmind/memory-engine": "workspace:*",
+    "@openmind/connectors": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vite": "^5.2.0",
+    "@tauri-apps/cli": "^2.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0"
+  }
+}

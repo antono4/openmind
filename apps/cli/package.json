@@ -1,0 +1,28 @@
+{
+  "name": "@openmind/cli",
+  "version": "1.0.0",
+  "description": "OPEN MIND AI Command-Line Interface",
+  "type": "module",
+  "bin": {
+    "openmind": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@openmind/shared-types": "workspace:*",
+    "@openmind/memory-engine": "workspace:*",
+    "@openmind/connectors": "workspace:*",
+    "chalk": "^5.3.0",
+    "inquirer": "^9.2.0",
+    "ora": "^7.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/inquirer": "^9.0.0"
+  }
+}

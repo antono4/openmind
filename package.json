@@ -1,0 +1,33 @@
+{
+  "name": "openmind",
+  "version": "1.0.0",
+  "description": "OPEN MIND AI - An open-source AI assistant without token limitations",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --parallel -r run dev",
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "clean": "pnpm -r run clean",
+    "bootstrap": "./scripts/bootstrap.sh",
+    "verify": "./scripts/verify-install.sh"
+  },
+  "keywords": [
+    "ai",
+    "open-source",
+    "no-token-limit",
+    "local-ai",
+    "rust",
+    "typescript"
+  ],
+  "author": "OPEN MIND Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
