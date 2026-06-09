@@ -48,7 +48,7 @@ openmind/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/openmind.git
+git clone https://github.com/antono4/openmind.git
 cd openmind
 
 # Run bootstrap script
