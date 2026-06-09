@@ -149,4 +149,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - Built with ❤️ by the OPEN MIND Team
-- Powered by Rust and TypeScript
+- Powered by antono4
