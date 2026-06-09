@@ -1,0 +1,32 @@
+{
+  "name": "@openmind/file-processor",
+  "version": "1.0.0",
+  "description": "File processing for PDF, documents, images, and more",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@openmind/shared-types": "workspace:*",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0",
+    "sharp": "^0.33.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0",
+    "@types/pdf-parse": "^1.1.4"
+  }
+}
