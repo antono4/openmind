@@ -52,7 +52,7 @@ openmind/
 ### Prerequisites
 
 - Node.js 18+
-- Rust 1.70+
+- Rust 1.70+ (optional for desktop app)
 - pnpm 8+
 - Ollama (for LLM features)
 
@@ -63,19 +63,19 @@ openmind/
 git clone https://github.com/Antono4/openmind.git
 cd openmind
 
-# Run bootstrap script
-./scripts/bootstrap.sh
+# One-line install (Linux/macOS)
+curl -fsSL https://raw.githubusercontent.com/Antono4/openmind/main/scripts/install.sh | bash
+
+# Or use the installer script
+chmod +x scripts/install.sh
+./scripts/install.sh
 
 # Or manually install
 pnpm install
-
-# Install Ollama (if not installed)
-# macOS/Linux: curl -fsSL https://ollama.ai/install.sh | sh
-# Windows: Download from https://ollama.ai
-
-# Pull a model
-ollama pull llama3
+pnpm build
 ```
+
+For detailed installation instructions, see [INSTALL.md](INSTALL.md).
 
 ### Running
 
@@ -88,6 +88,9 @@ pnpm dev:desktop
 
 # Start CLI
 pnpm dev:cli
+
+# Or after installation
+openmind --help
 ```
 
 ## 📦 Packages

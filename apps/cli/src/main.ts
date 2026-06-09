@@ -5,6 +5,17 @@
  * 
  * A powerful terminal-based interface for OPEN MIND AI.
  * Supports chat, embeddings, file processing, and more.
+ * 
+ * Usage:
+ *   openmind           - Interactive mode
+ *   openmind chat      - Chat with Ollama
+ *   openmind stream    - Streaming chat
+ *   openmind embed     - Generate embeddings
+ *   openmind search    - Vector search
+ *   openmind file      - Process files
+ *   openmind plugins   - Plugin manager
+ *   openmind info      - System info
+ *   openmind help      - Show help
  */
 
 import chalk from 'chalk';
@@ -488,3 +499,5 @@ async function interactiveMode() {
 }
 
 main().catch(console.error);
+// For CLI execution
+export { main };
