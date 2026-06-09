@@ -6,11 +6,11 @@
   <img src="https://img.shields.io/badge/Architecture-Rust%20+%20TypeScript-orange?style=for-the-badge" alt="Architecture">
 </p>
 
-> **OPEN MIND AI** - An open-source AI assistant that runs without token limitations.
+> **OPEN MIND AI** - An open-source AI assistants.
 
 ## Features
 
-- 🚀 **No Token Limits** - Process unlimited text without restrictions
+
 - 🔓 **Open Source** - Fully transparent and community-driven
 - 💻 **Cross-Platform** - Desktop app, CLI, and web interfaces
 - 🔒 **Privacy-First** - Run locally on your machine
