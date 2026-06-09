@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  OPEN MIND AI - WiX Configuration for MSI Installer
+  
+  This file configures the MSI installer for OPEN MIND AI.
+  It defines the directory structure, components, and features.
+-->
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  
+  <!-- Product Information -->
+  <?define ProductName = "OPEN MIND AI" ?>
+  <?define Manufacturer = "OPEN MIND Team" ?>
+  <?define ProductVersion = "1.0.0" ?>
+  <?define ProductCode = "*" ?>
+  <?define UpgradeCode = "E8B3F5A2-7D4C-4B1E-9F6A-3C8D2E1B5F4A" ?>
+  
+  <!-- Directories -->
+  <Directory Id="TARGETDIR" Name="SourceDir">
+    <!-- Program Files -->
+    <Directory Id="ProgramFilesFolder">
+      <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)">
+        
+        <!-- Main Application -->
+        <Component Id="MainExecutable" Guid="C1A2B3D4-E5F6-4A5B-8C7D-9E0F1A2B3C4D" KeyPath="yes">
+          <File Id="OpenMindExe" Source="*.exe" Name="OPEN MIND AI.exe" />
+          <RemoveFolder Id="RemoveProgramFolder" On="uninstall" />
+        </Component>
+        
+        <!-- CLI Executable -->
+        <Component Id="CLIExecutable" Guid="D2E3F4A5-B6C7-4D8E-9F0A-1B2C3D4E5F6" KeyPath="yes">
+          <File Id="OpenMindCLI" Source="*.exe" Name="openmind.exe" />
+        </Component>
+        
+        <!-- API Server -->
+        <Component Id="APIServer" Guid="E3F4A5B6-C7D8-4E9F-0A1B-2C3D4E5F6A7" KeyPath="yes">
+          <File Id="APIServerExe" Source="*.exe" Name="api-server.exe" />
+        </Component>
+        
+      </Directory>
+    </Directory>
+    
+    <!-- User Profile (for config/data) -->
+    <Directory Id="ProfileFolder">
+      <Directory Id="OpenMindData" Name=".openmind">
+        <Component Id="DataFolder" Guid="F4A5B6C7-D8E9-4F0A-1B2C-3D4E5F6A7B8" KeyPath="yes">
+          <CreateFolder />
+          <RemoveFolder Id="RemoveDataFolder" On="uninstall" />
+        </Component>
+      </Directory>
+    </Directory>
+    
+    <!-- Start Menu -->
+    <Directory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="$(var.ProductName)">
+        
+        <!-- Start Menu Shortcuts -->
+        <Component Id="StartMenuShortcuts" Guid="A5B6C7D8-E9F0-4A1B-2C3D-4E5F6A7B8C9" KeyPath="yes">
+          <Shortcut Id="ApplicationStartMenuShortcut"
+                    Name="$(var.ProductName)"
+                    Description="Open-source AI without token limitations"
+                    Target="[INSTALLFOLDER]OPEN MIND AI.exe"
+                    WorkingDirectory="INSTALLFOLDER" />
+          <Shortcut Id="CLIStartMenuShortcut"
+                    Name="OPEN MIND AI CLI"
+                    Description="Command-line interface"
+                    Target="[INSTALLFOLDER]openmind.exe"
+                    WorkingDirectory="INSTALLFOLDER" />
+          <Shortcut Id="UninstallShortcut"
+                    Name="Uninstall"
+                    Description="Remove OPEN MIND AI"
+                    Target="[System64Folder]msiexec.exe"
+                    Arguments="/x [ProductCode]" />
+          <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
+        </Component>
+        
+      </Directory>
+    </Directory>
+    
+    <!-- Desktop -->
+    <Directory Id="DesktopFolder">
+      <Component Id="DesktopShortcut" Guid="B6C7D8E9-F0A1-4B2C-3D4E-5F6A7B8C9D0" KeyPath="yes">
+        <Shortcut Id="DesktopShortcut"
+                  Name="$(var.ProductName)"
+                  Description="Open-source AI without token limitations"
+                  Target="[INSTALLFOLDER]OPEN MIND AI.exe"
+                  WorkingDirectory="INSTALLFOLDER" />
+      </Component>
+    </Directory>
+    
+  </Directory>
+  
+  <!-- Features -->
+  <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
+    <ComponentRef Id="MainExecutable" />
+    <ComponentRef Id="CLIExecutable" />
+    <ComponentRef Id="APIServer" />
+    <ComponentRef Id="DataFolder" />
+    <ComponentRef Id="StartMenuShortcuts" />
+    <ComponentRef Id="DesktopShortcut" />
+  </Feature>
+  
+</Include>
