@@ -1,5 +1,8 @@
 # OPEN MIND AI
 
+> **Created by Antono**
+
+
 <p align="center">
   <img src="https://img.shields.io/badge/AI-Token%20Free-brightgreen?style=for-the-badge" alt="Token Free">
   <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License">
