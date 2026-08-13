@@ -9,7 +9,12 @@
   ],
   "scripts": {
     "dev": "pnpm --parallel -r run dev",
+    "dev:api": "pnpm --filter @openmind/api-server dev",
+    "dev:desktop": "pnpm --filter @openmind/desktop dev",
+    "dev:cli": "pnpm --filter @openmind/cli dev",
     "build": "pnpm -r run build",
+    "build:api": "pnpm --filter @openmind/api-server build",
+    "start:api": "pnpm --filter @openmind/api-server start",
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",
     "clean": "pnpm -r run clean",
@@ -21,6 +26,8 @@
     "open-source",
     "no-token-limit",
     "local-ai",
+    "ollama",
+    "llm",
     "rust",
     "typescript"
   ],

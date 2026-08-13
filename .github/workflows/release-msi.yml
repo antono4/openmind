@@ -1,0 +1,234 @@
+name: Build MSI Installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: false
+        default: '1.0.0'
+  release:
+    types: [created]
+
+jobs:
+  build-cli:
+    name: Build CLI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build CLI
+        run: pnpm --filter @openmind/cli build
+
+      - name: Build API Server
+        run: pnpm --filter @openmind/api-server build
+
+      - name: Create portable package
+        run: |
+          mkdir -p dist/installers
+          cp -r apps/cli/dist/* dist/installers/ 2>/dev/null || true
+          cp -r apps/api-server/dist/* dist/installers/ 2>/dev/null || true
+          cp scripts/install/install-linux.sh dist/installers/ 2>/dev/null || true
+          
+          cat > dist/installers/README.txt << 'EOF'
+OPEN MIND AI - Portable Version
+===============================
+
+Usage:
+  CLI:    node dist/main.js --help
+  API:    node dist/index.js
+
+For full installation, see INSTALL.md
+
+For AI features, install Ollama:
+  curl -fsSL https://ollama.ai/install.sh | sh
+  ollama pull llama3
+
+More info: https://github.com/Antono4/openmind
+EOF
+
+      - name: Create ZIP
+        run: |
+          cd dist/installers
+          zip -r ../OPEN-MIND-AI-portable.zip .
+          cd ../..
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openmind-cli
+          path: dist/OPEN-MIND-AI-portable.zip
+
+  build-desktop:
+    name: Build Desktop (Windows)
+    runs-on: windows-latest
+    needs: build-cli
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-action@stable
+        with:
+          toolchain: stable
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install Rust dependencies
+        run: |
+          rustup target add x86_64-pc-windows-msvc
+
+      - name: Install WebView2
+        run: |
+          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/p/?LinkId=2124703" -OutFile "MicrosoftEdgeWebview2Setup.exe"
+          Start-Process -Wait -FilePath ".\MicrosoftEdgeWebview2Setup.exe" -ArgumentList "/silent","/install"
+          Remove-Item ".\MicrosoftEdgeWebview2Setup.exe" -Force
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Tauri
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        run: pnpm --filter @openmind/desktop tauri build --bundles msi,nsis
+
+      - name: Copy MSI
+        run: |
+          $msi = Get-ChildItem "apps/desktop/src-tauri/target/release/bundle/msi/*.msi" | Select-Object -First 1
+          if ($msi) {
+            Copy-Item $msi.FullName "dist/installers/" -Force
+          }
+
+      - name: Copy NSIS
+        run: |
+          $nsis = Get-ChildItem "apps/desktop/src-tauri/target/release/bundle/nsis/*.exe" | Select-Object -First 1
+          if ($nsis) {
+            Copy-Item $nsis.FullName "dist/installers/" -Force
+          }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openmind-desktop
+          path: dist/installers/
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-cli, build-desktop]
+    if: github.event_name == 'release'
+    steps:
+      - name: Download CLI artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: openmind-cli
+          path: dist/installers
+
+      - name: Download Desktop artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: openmind-desktop
+          path: dist/installers
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/installers/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Manual release (workflow_dispatch)
+  release-manual:
+    name: Create Release (Manual)
+    runs-on: ubuntu-latest
+    needs: [build-cli, build-desktop]
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Download CLI artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: openmind-cli
+          path: dist/installers
+
+      - name: Download Desktop artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: openmind-desktop
+          path: dist/installers
+
+      - name: List artifacts
+        run: ls -la dist/installers/
+
+      - name: Create release notes
+        id: release-notes
+        run: |
+          VERSION="${{ github.event.inputs.version || '1.0.0' }}"
+          cat << 'EOF' > release-notes.md
+          # OPEN MIND AI v$VERSION
+
+          ## Downloads
+
+          ### Windows
+          - MSI Installer: `OPEN MIND AI-$VERSION.msi`
+          - NSIS Setup: `OPEN MIND AI-$VERSION-setup.exe`
+          - Portable: `OPEN MIND-AI-portable.zip`
+
+          ### Installation
+          1. Download the MSI or EXE installer
+          2. Double-click to run the installer
+          3. Follow the installation wizard
+
+          ## What's New
+
+          - Open-source AI without token limitations
+          - Local LLM support via Ollama
+          - Vector search capabilities
+          - File processing (PDF, DOCX, images)
+          - Plugin system for extensibility
+          - REST API and WebSocket support
+
+          ## System Requirements
+
+          - Windows 10 or later
+          - 4GB RAM minimum (8GB recommended)
+          - 500MB disk space
+          - Node.js 18+ (for CLI)
+
+          ## Links
+
+          - Documentation: https://github.com/Antono4/openmind
+          - Issues: https://github.com/Antono4/openmind/issues
+          EOF
+          cat release-notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.event.inputs.version || '1.0.0' }}
+          release_name: OPEN MIND AI v${{ github.event.inputs.version || '1.0.0' }}
+          body_path: release-notes.md
+          files: dist/installers/*
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

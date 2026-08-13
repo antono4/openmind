@@ -1,0 +1,32 @@
+{
+  "name": "@openmind/ai-core",
+  "version": "1.0.0",
+  "description": "Local LLM integration with Ollama, OpenAI-compatible API support",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@openmind/shared-types": "workspace:*",
+    "@openmind/memory-engine": "workspace:*",
+    "eventsource": "^2.0.2",
+    "undici": "^6.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0",
+    "@types/eventsource": "^1.1.15"
+  }
+}

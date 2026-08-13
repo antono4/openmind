@@ -1,0 +1,71 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "OPEN MIND AI",
+  "version": "1.0.0",
+  "identifier": "ai.openmind.app",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:3000",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist",
+    "devtools": true
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "OPEN MIND AI",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["msi", "nsis"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [],
+    "copyright": "Copyright 2024 OPEN MIND Team",
+    "category": "Utility",
+    "shortDescription": "Open-source AI without token limitations",
+    "longDescription": "OPEN MIND AI is an open-source AI assistant that runs without token limitations. Powered by local LLM (Ollama), vector search, and semantic embeddings.",
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "wix": {
+        "language": ["en-US", "id-ID"],
+        "version": "1.0.0",
+        "upgradeCode": "E8B3F5A2-7D4C-4B1E-9F6A-3C8D2E1B5F4A"
+      },
+      "nsis": {
+        "languages": ["English", "Indonesian"],
+        "displayLanguageSelector": true,
+        "installerIcon": "icons/icon.ico",
+        "headerImage": "icons/header.bmp",
+        "sidebarImage": "icons/sidebar.bmp"
+      }
+    },
+    "publisher": "OPEN MIND Team",
+    "createUpdaterArtifacts": false
+  },
+  "plugins": {
+    "shell": {
+      "open": true
+    }
+  }
+}

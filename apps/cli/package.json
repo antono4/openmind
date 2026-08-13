@@ -4,25 +4,38 @@
   "description": "OPEN MIND AI Command-Line Interface",
   "type": "module",
   "bin": {
-    "openmind": "./dist/index.js"
+    "openmind": "./dist/main.js"
   },
   "scripts": {
-    "dev": "tsc --watch",
+    "dev": "node --import tsx src/main.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/main.js",
+    "prepublishOnly": "pnpm build",
     "lint": "eslint src --ext .ts",
     "clean": "rm -rf dist"
   },
   "dependencies": {
     "@openmind/shared-types": "workspace:*",
     "@openmind/memory-engine": "workspace:*",
+    "@openmind/ai-core": "workspace:*",
+    "@openmind/vector-db": "workspace:*",
+    "@openmind/file-processor": "workspace:*",
     "@openmind/connectors": "workspace:*",
+    "@openmind/plugin-system": "workspace:*",
     "chalk": "^5.3.0",
     "inquirer": "^9.2.0",
     "ora": "^7.0.0"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
+    "tsx": "^4.7.0",
     "@types/inquirer": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
