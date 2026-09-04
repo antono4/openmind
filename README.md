@@ -1,2 +1,32 @@
-Last updated: 2026-09-05 02:34:22 WIB
-Last updated: 2026-09-05 03:53:01 WIB
+# openmind
+
+OPEN MIND AI - An open-source AI assistant without token limitations
+
+## 📋 Overview
+
+This repository contains **80 files** and is built with the following technologies:
+
+Node.js
+
+## 🚀 Quick Start
+
+```bash
+npm install
+npm run dev
+npm run build
+```
+
+## ✨ Features
+
+- 📝 Auto-generated documentation
+
+## 🛠️ Technologies
+
+Node.js
+
+## 📄 License
+
+MIT License
+
+---
+*Last updated: 2026-09-05 03:54:44 WIB*
